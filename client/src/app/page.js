@@ -10,6 +10,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter } from "@/components/ui/card";
 import { Alert, AlertDescription } from "@/components/ui/alert";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+import { Joan } from 'next/font/google';
 
 export default function LoginPage() {
   const loginSchema = Yup.object().shape({
@@ -33,15 +36,23 @@ export default function LoginPage() {
           validationSchema={loginSchema}
           onSubmit={async (values, actions) => {
             try {
-              const response = await axios.post(
-                `${process.env.NEXT_PUBLIC_API_URL}/login`,
-                values
-              );
+              // const response = await axios.post(
+              //   `${process.env.NEXT_PUBLIC_API_URL}/login`,
+              //   values
+              // );
+              alert(JSON.stringify(values))
+              toast.success('Login successful!', {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 3000,
+              });
               console.log('Login successful:', response.data);
               // Handle success (e.g., navigate to another page)
             } catch (error) {
+              toast.error('Login failed! Please check your credentials.', {
+                position: toast.POSITION.TOP_RIGHT,
+                autoClose: 3000,
+              });
               console.error('Login failed:', error);
-              // Optionally, handle errors (e.g., show a message)
             } finally {
               actions.setSubmitting(false);
             }
@@ -90,6 +101,7 @@ export default function LoginPage() {
           )}
         </Formik>
       </Card>
+      <ToastContainer />
     </div>
   );
 }
