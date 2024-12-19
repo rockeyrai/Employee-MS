@@ -36,11 +36,11 @@ export default function LoginPage() {
           validationSchema={loginSchema}
           onSubmit={async (values, actions) => {
             try {
-              // const response = await axios.post(
-              //   `${process.env.NEXT_PUBLIC_API_URL}/login`,
-              //   values
-              // );
-              alert(JSON.stringify(values))
+              const response = await axios.post(
+                `${process.env.NEXT_PUBLIC_API_URL}/login`,
+                values
+              );
+              // alert(JSON.stringify(values))
               toast.success('Login successful!', {
                 position: toast.POSITION.TOP_RIGHT,
                 autoClose: 3000,
