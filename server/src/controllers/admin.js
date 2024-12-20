@@ -27,8 +27,9 @@ const mytest = (req, res) => {
           { role: "admin", email: email },
           "jst_secreat_key", // Store the secret key securely in environment variables
           { expiresIn: "1d" } // Corrected "expiresnIn" to "expiresIn"
+          
         );
-
+        res.cookie("toekn",token)
         return res.json({ loginStatus: true, token: token });
       } else {
         return res.json({ loginStatus: false, error: "Invalid credentials" });

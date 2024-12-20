@@ -4,7 +4,6 @@ import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
-
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -12,7 +11,6 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import { Joan } from 'next/font/google';
 
 export default function LoginPage() {
   const loginSchema = Yup.object().shape({
@@ -38,18 +36,27 @@ export default function LoginPage() {
             try {
               const response = await axios.post(
                 `${process.env.NEXT_PUBLIC_API_URL}/login`,
-                values
+                values,
+                { withCredentials: true }
               );
-              // alert(JSON.stringify(values))
-              toast.success('Login successful!', {
-                position: toast.POSITION.TOP_RIGHT,
-                autoClose: 3000,
-              });
-              console.log('Login successful:', response.data);
-              // Handle success (e.g., navigate to another page)
+          
+              // Check if the response indicates success
+              if (response.data.loginStatus) {
+                toast.success('Login successful!', {
+                  position: "top-right",
+                  autoClose: 3000,
+                });
+                console.log('Login successful:', response.data);
+                // Handle success (e.g., navigate to another page)
+              } else {
+                toast.error('Login failed! Invalid credentials.', {
+                  position: "top-right",
+                  autoClose: 3000,
+                });
+              }
             } catch (error) {
               toast.error('Login failed! Please check your credentials.', {
-                position: toast.POSITION.TOP_RIGHT,
+                position: "top-right",
                 autoClose: 3000,
               });
               console.error('Login failed:', error);
@@ -57,6 +64,7 @@ export default function LoginPage() {
               actions.setSubmitting(false);
             }
           }}
+          
         >
           {({ errors, touched, isSubmitting }) => (
             <Form>
