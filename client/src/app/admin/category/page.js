@@ -6,33 +6,41 @@ import React, { useRef } from 'react';
 const CategoryForm = () => {
   const categoryRef = useRef();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const selectedCategory = categoryRef.current.value;
-    e.preventDefault()
-    axios.post(`${NEXT_PUBLIC_API_URL}/categroy`,selectedCategory)
-    console.log('Form submitted:', selectedCategory);
-    alert(`Form submitted: ${selectedCategory}`);
-    // Add further form handling logic here
+    const enteredCategory = categoryRef.current.value.trim();
+
+    if (!enteredCategory) {
+      alert('Please enter a category');
+      return;
+    }
+
+    try {
+      const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/category`, {
+        category: enteredCategory,
+      });
+
+      console.log('Form submitted:', response.data);
+      alert('Category added successfully');
+      categoryRef.current.value = ''; // Clear the input field after submission
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Failed to add category. Please try again.');
+    }
   };
 
   return (
     <form onSubmit={handleSubmit} style={{ maxWidth: '400px', margin: 'auto' }}>
       <div style={{ marginBottom: '1rem' }}>
         <label htmlFor="category" style={{ display: 'block', marginBottom: '0.5rem' }}>Category:</label>
-        <select
+        <input
+          type="text"
           id="category"
           ref={categoryRef}
-          defaultValue="default"
+          placeholder="Enter category"
           required
           style={{ width: '100%', padding: '0.5rem' }}
-        >
-          <option value="default" disabled>Select a category</option>
-          <option value="education">Education</option>
-          <option value="health">Health</option>
-          <option value="technology">Technology</option>
-          <option value="finance">Finance</option>
-        </select>
+        />
       </div>
 
       <Button type="submit" style={{ padding: '0.75rem', width: '100%' }}>Submit</Button>
