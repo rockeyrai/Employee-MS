@@ -25,11 +25,11 @@ const mytest = (req, res) => {
         const email = result[0].email; // Corrected "resutl" to "result"
         const token = jwt.sign(
           { role: "admin", email: email },
-          "jst_secreat_key", // Store the secret key securely in environment variables
+          "jwt_secret_key", // Store the secret key securely in environment variables
           { expiresIn: "1d" } // Corrected "expiresnIn" to "expiresIn"
           
         );
-        res.cookie("toekn",token)
+        res.cookie("token",token)
         return res.json({ loginStatus: true, token: token });
       } else {
         return res.json({ loginStatus: false, error: "Invalid credentials" });
@@ -38,4 +38,18 @@ const mytest = (req, res) => {
   });
 };
 
-module.exports = mytest;
+const addCategory = (req, res) => {
+  console.log(req.body);
+  const sql = "INSERT INTO category (`name`) VALUES (?)";
+  
+  dbPool.query(sql, [req.body.category], (err, result) => {
+    if (err) {
+      console.error("Query Error:", err);
+      return res.json({ status: false, error: "Query error" });
+    }
+    return res.json({ status: true, message: "Category added successfully!" });
+  });
+};
+
+
+module.exports = {mytest,addCategory};
