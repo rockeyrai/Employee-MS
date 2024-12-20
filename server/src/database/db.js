@@ -1,18 +1,22 @@
-const mysqul = require('mysql2')
+const mysql = require('mysql2');
 
-const dbConnect = mysqul.createConnection({
-  host:"localhost",
-  user:"root",
-  password:"",
-  database:"employee"
-})
+const dbPool = mysql.createPool({
+  host: "localhost",
+  user: "root",
+  password: "",
+  database: "employee",
+  waitForConnections: true, // Queue requests when no connection is available
+  connectionLimit: 10,      // Maximum number of connections in the pool
+  queueLimit: 0             // Unlimited queueing of requests
+});
 
-dbConnect.connect((error)=>{
-if(error){
-  console.log(`databse connecetion error `)
-}else{
-  console.log(`database connected`)
-}
-})
+dbPool.getConnection((error, connection) => {
+  if (error) {
+    console.error(`Database connection error: ${error.message}`);
+  } else {
+    console.log("Database pool connected successfully.");
+    connection.release(); // Return the connection to the pool
+  }
+});
 
-module.exports = dbConnect
+module.exports = dbPool;
