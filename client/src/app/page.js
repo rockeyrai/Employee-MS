@@ -11,8 +11,12 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
+  const router = useRouter()
+
+
   const loginSchema = Yup.object().shape({
     email: Yup.string()
       .email('Invalid email address')
@@ -47,6 +51,8 @@ export default function LoginPage() {
                   autoClose: 3000,
                 });
                 console.log('Login successful:', response.data);
+                router.push('/dashboard')
+              
                 // Handle success (e.g., navigate to another page)
               } else {
                 toast.error('Login failed! Invalid credentials.', {
