@@ -25,7 +25,7 @@ const mytest = (req, res) => {
         const email = result[0].email; // Corrected "resutl" to "result"
         const token = jwt.sign(
           { role: "admin", email: email },
-          "jwt_secret_key", // Store the secret key securely in environment variables
+          process.env.JWT_SECRET_KEY , // Store the secret key securely in environment variables
           { expiresIn: "1d" } // Corrected "expiresnIn" to "expiresIn"
           
         );
@@ -38,6 +38,18 @@ const mytest = (req, res) => {
   });
 };
 
+const fetchCategory = (req, res) => {
+  const sql = "SELECT * FROM category";
+  
+  dbPool.query(sql, (err, result) => {
+    if (err) return res.json({ Status: false, Error: "Query Error" });
+
+    // Instead of sending `req.body`, send the `result` from the query
+    return res.json({ Status: true, data: result });
+  });
+};
+
+
 const addCategory = (req, res) => {
   console.log(req.body);
   const sql = "INSERT INTO category (`name`) VALUES (?)";
@@ -47,9 +59,9 @@ const addCategory = (req, res) => {
       console.error("Query Error:", err);
       return res.json({ status: false, error: "Query error" });
     }
-    return res.json({ status: true, message: "Category added successfully!" });
+    return res.json({ status: true, message: `Category ${req.body.category} added successfully!` });
   });
 };
 
 
-module.exports = {mytest,addCategory};
+module.exports = {mytest,addCategory,fetchCategory};

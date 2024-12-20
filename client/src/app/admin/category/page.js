@@ -1,10 +1,19 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import axios from 'axios';
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const CategoryForm = () => {
   const categoryRef = useRef();
+  const [category, setCategory] = useState([])
+
+  useEffect(()=>{
+    axios.get(`${process.env.NEXT_PUBLIC_API_URL}/category`)
+    .then(result =>{
+      console.log(result.data)
+    }).catch(err => console.log(err))
+  },[])
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
