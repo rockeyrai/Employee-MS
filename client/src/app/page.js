@@ -51,7 +51,7 @@ export default function LoginPage() {
                   autoClose: 3000,
                 });
                 console.log('Login successful:', response.data);
-                router.push('/dashboard')
+                router.push('/admin/dashboard')
               
                 // Handle success (e.g., navigate to another page)
               } else {

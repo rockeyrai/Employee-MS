@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Dashboard = () => {
+const Category = () => {
   return (
     <div>
-      dfafdas
+      Category
     </div>
   )
 }
 
-export default Dashboard
+export default Category
