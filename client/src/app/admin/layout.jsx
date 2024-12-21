@@ -1,5 +1,5 @@
 import { Inter } from 'next/font/google'
-// import "./globals.css"
+import "../globals.css"
 import { Sidebar } from "@/components/sidebar"
 import { Header } from "@/components/header"
 import { SidebarProvider } from "@/components/ui/sidebar"
@@ -14,9 +14,10 @@ export const metadata = {
 export default function RootLayout({
   children
 }) {
+  console.log("Inter className:", inter.className);
   return (
     (<html lang="en">
-      <body className={inter.className}>
+      <body >
         <SidebarProvider>
           <div className="flex w-full h-screen overflow-hidden">
             <Sidebar />
