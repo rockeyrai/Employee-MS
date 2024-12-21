@@ -9,9 +9,8 @@ const CategoryForm = () => {
   const categoryRef = useRef();
   const [categories, setCategories] = useState([]);
 
-
   // Fetch categories
-  const getData=() => {
+  const getData = () => {
     axios
       .get(`${process.env.NEXT_PUBLIC_API_URL}/category`)
       .then((result) => {
@@ -31,36 +30,36 @@ const CategoryForm = () => {
         setCategories([]);
       });
   };
-  useEffect(()=>{
-    getData()
-  },[])
+
+  useEffect(() => {
+    getData();
+  }, []);
 
   // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
     const enteredCategory = categoryRef.current.value.trim();
-  
+
     if (!enteredCategory) {
       toast.warn('Please enter a category name.');
       return;
     }
-  
+
     try {
       console.log('Submitting new category:', enteredCategory);
-  
+
       const response = await axios.post(`${process.env.NEXT_PUBLIC_API_URL}/category`, {
         category: enteredCategory,
       });
-  
+
       console.log('Full Server Response:', response);
-  
+
       // Check if the response status is true and handle accordingly
       if (response.data?.status === true) {
         const message = response.data.message;
         toast.success(`🎉 ${message}`);
-        
-        // Optionally, update the list of categories if needed
-        // You can manually update categories if the server is not returning the updated category data.
+
+        // Fetch the updated categories
         getData();
         categoryRef.current.value = ''; // Clear the input field after successful submission
       } else {
@@ -74,8 +73,26 @@ const CategoryForm = () => {
       );
     }
   };
-  
 
+  // Handle delete category
+  const handleDelete = async (categoryId) => {
+    try {
+      console.log('Deleting category with ID:', categoryId);
+
+      const response = await axios.delete(`${process.env.NEXT_PUBLIC_API_URL}/category/${categoryId}`);
+
+      if (response.data?.status === true) {
+        toast.success('Category deleted successfully');
+        // Refresh the category list after deletion
+        getData();
+      } else {
+        toast.error('Failed to delete category.');
+      }
+    } catch (error) {
+      console.log('Error deleting category:', error.response || error);
+      toast.error('Failed to delete category. Please try again.');
+    }
+  };
 
   return (
     <div style={{ maxWidth: '600px', margin: 'auto' }}>
@@ -112,9 +129,18 @@ const CategoryForm = () => {
                   border: '1px solid #ddd',
                   marginBottom: '0.5rem',
                   borderRadius: '4px',
+                  display:'flex',
+                  justifyContent: 'space-between',
+                  alignItems:'center'
                 }}
               >
-                <strong>Name:</strong> {category.name}
+                <div><strong>Name:</strong> {category.name}</div>
+                <Button
+                  onClick={() => handleDelete(category.id)}
+                  style={{ marginLeft: '1rem', padding: '0.25rem 0.5rem' }}
+                >
+                  Delete
+                </Button>
               </li>
             ))}
           </ul>
