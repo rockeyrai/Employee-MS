@@ -38,8 +38,8 @@ const mytest = (req, res) => {
   });
 };
 
-const fetchCategory = (req, res) => {
-  const sql = "SELECT * FROM category";
+const fetchDepartment = (req, res) => {
+  const sql = "SELECT * FROM department";
   
   dbPool.query(sql, (err, result) => {
     if (err) return res.json({ Status: false, Error: "Query Error" });
@@ -50,48 +50,48 @@ const fetchCategory = (req, res) => {
 };
 
 
-const addCategory = (req, res) => {
+const addDepartment = (req, res) => {
   console.log(req.body);
-  const sql = "INSERT INTO category (`name`) VALUES (?)";
+  const sql = "INSERT INTO department (`name`) VALUES (?)";
   
-  dbPool.query(sql, [req.body.category], (err, result) => {
+  dbPool.query(sql, [req.body.department], (err, result) => {
     if (err) {
       console.error("Query Error:", err);
       return res.json({ status: false, error: "Query error" });
     }
-    return res.json({ status: true, message: `Category ${req.body.category} added successfully!` });
+    return res.json({ status: true, message: `Department ${req.body.department} added successfully!` });
   });
 };
 
 
-const deleteCategory = (req, res) => {
-  // Extract the categoryId from the URL parameter
-  const categoryId = req.params.id;
+const deleteDepartment = (req, res) => {
+  // Extract the departmentId from the URL parameter
+  const departmentId = req.params.id;
 
-  // Log the categoryId to see what is being passed
-  console.log('Category ID:', categoryId);
+  // Log the departmentId to see what is being passed
+  console.log('department ID:', departmentId);
 
-  // SQL query to delete category by id
-  const sql = "DELETE FROM category WHERE id = ?";
+  // SQL query to delete department by id
+  const sql = "DELETE FROM department WHERE id = ?";
 
   // Execute the SQL query
-  dbPool.query(sql, [categoryId], (err, result) => {
+  dbPool.query(sql, [departmentId], (err, result) => {
     if (err) {
       console.error("Query Error:", err);
-      return res.status(500).json({ status: false, message: 'Error deleting category' });
+      return res.status(500).json({ status: false, message: 'Error deleting department' });
     }
 
-    // Check if the category exists
+    // Check if the department exists
     if (result.affectedRows === 0) {
-      return res.status(404).json({ status: false, message: 'Category not found' });
+      return res.status(404).json({ status: false, message: 'Department not found' });
     }
 
-    // Successfully deleted category
-    return res.status(200).json({ status: true, message: 'Category deleted successfully' });
+    // Successfully deleted department
+    return res.status(200).json({ status: true, message: 'Department deleted successfully' });
   });
 };
 
 
 
 
-module.exports = {mytest,addCategory,fetchCategory,deleteCategory};
+module.exports = {mytest,addDepartment,fetchDepartment,deleteDepartment};

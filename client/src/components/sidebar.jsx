@@ -19,7 +19,7 @@ import { usePathname } from "next/navigation"
 const navItems = [
   { icon: Home, label: "Dashboard", href: "/admin" },
   { icon: Users, label: "Employee", href: "/admin/employee" },
-  { icon: LayoutDashboard, label: "Category", href: "/admin/category" },
+  { icon: LayoutDashboard, label: "Department", href: "/admin/department" },
   { icon: Settings, label: "profile", href: "/admin/profile" },
   {icon: Power, label:"Logout" ,href:"/admin/logout"}
 ]
