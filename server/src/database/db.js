@@ -1,22 +1,30 @@
 const mysql = require('mysql2');
+require('dotenv').config();
+
 
 const dbPool = mysql.createPool({
   host: "localhost",
   user: "root",
-  password: "",
+  password: "", 
   database: "employee",
-  waitForConnections: true, // Queue requests when no connection is available
-  connectionLimit: 10,      // Maximum number of connections in the pool
-  queueLimit: 0             // Unlimited queueing of requests
+  waitForConnections: true,
+  connectionLimit: 10,
+  queueLimit: 0
 });
+
 
 dbPool.getConnection((error, connection) => {
   if (error) {
-    console.error(`Database connection error: ${error.message}`);
+      console.error(`Database connection error: ${error.code}`);
+      console.error(`Error message: ${error.message}`);
+      if (error.fatal) {
+          console.error('Fatal error encountered. Exiting.');
+      }
   } else {
-    console.log("Database pool connected successfully.");
-    connection.release(); // Return the connection to the pool
+      console.log("Database pool connected successfully.");
+      connection.release(); // Return the connection to the pool
   }
 });
+
 
 module.exports = dbPool;

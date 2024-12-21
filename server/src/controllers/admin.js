@@ -64,4 +64,34 @@ const addCategory = (req, res) => {
 };
 
 
-module.exports = {mytest,addCategory,fetchCategory};
+const deleteCategory = (req, res) => {
+  // Extract the categoryId from the URL parameter
+  const categoryId = req.params.id;
+
+  // Log the categoryId to see what is being passed
+  console.log('Category ID:', categoryId);
+
+  // SQL query to delete category by id
+  const sql = "DELETE FROM category WHERE id = ?";
+
+  // Execute the SQL query
+  dbPool.query(sql, [categoryId], (err, result) => {
+    if (err) {
+      console.error("Query Error:", err);
+      return res.status(500).json({ status: false, message: 'Error deleting category' });
+    }
+
+    // Check if the category exists
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ status: false, message: 'Category not found' });
+    }
+
+    // Successfully deleted category
+    return res.status(200).json({ status: true, message: 'Category deleted successfully' });
+  });
+};
+
+
+
+
+module.exports = {mytest,addCategory,fetchCategory,deleteCategory};
