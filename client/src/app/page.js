@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
 import axios from 'axios';
@@ -16,7 +16,6 @@ import { useRouter } from 'next/navigation'
 export default function LoginPage() {
   const router = useRouter()
 
-
   const loginSchema = Yup.object().shape({
     email: Yup.string()
       .email('Invalid email address')
@@ -25,6 +24,10 @@ export default function LoginPage() {
       .min(8, 'Password must be at least 8 characters')
       .required('Password is required'),
   });
+
+  useEffect(() => {
+    alert(document.cookie); // This will only run on the client side
+  }, []);
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
@@ -51,7 +54,7 @@ export default function LoginPage() {
                   autoClose: 3000,
                 });
                 console.log('Login successful:', response.data);
-                router.push('/admin/dashboard')
+                router.push('/admin')
               
                 // Handle success (e.g., navigate to another page)
               } else {

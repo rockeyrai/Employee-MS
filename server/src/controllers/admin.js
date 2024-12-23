@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 const dbPool = require("../database/db"); // Replace with your actual database pool module
 
-const mytest = (req, res) => {
+const adminLogin = (req, res) => {
   console.log(req.body);
 
   const sql = "SELECT * FROM admin WHERE email = ? AND password = ?";
@@ -37,6 +37,17 @@ const mytest = (req, res) => {
     });
   });
 };
+
+const adminLogout = (req, res) => {
+  res.clearCookie("token", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: "strict",
+    path: "/", // Ensure this matches the path used when setting the cookie
+  });
+  res.status(200).json({ message: "Logout successful" });
+};
+
 
 const fetchDepartment = (req, res) => {
   const sql = "SELECT * FROM department";
@@ -94,4 +105,4 @@ const deleteDepartment = (req, res) => {
 
 
 
-module.exports = {mytest,addDepartment,fetchDepartment,deleteDepartment};
+module.exports = {adminLogin,addDepartment,fetchDepartment,deleteDepartment,adminLogout};
