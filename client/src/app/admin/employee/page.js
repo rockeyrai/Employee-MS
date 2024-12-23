@@ -86,6 +86,12 @@ const EmployeeForm = () => {
 
       if (response.data.status === true) {
         toast.success(`🎉 ${response.data.message}`);
+        nameRef.current.value = '';
+        emailRef.current.value = '';
+        locationRef.current.value = '';
+        hireDateRef.current.value = '';
+        departmentRef.current.value = '';
+        phoneRef.current.value = '';
         getData(); // Refresh employee list
       } else {
         toast.error('Failed to add employee.');
