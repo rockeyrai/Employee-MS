@@ -25,10 +25,6 @@ export default function LoginPage() {
       .required('Password is required'),
   });
 
-  useEffect(() => {
-    alert(document.cookie); // This will only run on the client side
-  }, []);
-
   return (
     <div className="flex items-center justify-center min-h-screen bg-gray-100">
       <Card className="w-full max-w-md">
@@ -86,6 +82,7 @@ export default function LoginPage() {
                     name="email"
                     type="email"
                     placeholder="Enter your email"
+                     autoComplete="email"
                   />
                   {errors.email && touched.email && (
                     <Alert variant="destructive">
@@ -101,6 +98,7 @@ export default function LoginPage() {
                     name="password"
                     type="password"
                     placeholder="Enter your password"
+                    autoComplete="current-password"
                   />
                   {errors.password && touched.password && (
                     <Alert variant="destructive">
