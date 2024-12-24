@@ -1,8 +1,8 @@
 
 import { configureStore } from '@reduxjs/toolkit'
-import counterSlice from './slices/counterSlice'
-import cardSlice from './slices/cardSlice'
+import { cardSlice } from './slice/cardSlice'
 export const store = configureStore({
   reducer: {
+    card: cardSlice,
   },
 })
