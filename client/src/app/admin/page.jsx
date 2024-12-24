@@ -1,9 +1,12 @@
+'use client'
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Overview } from "@/components/overview"
 import { RecentSales } from "@/components/recent-sales"
+import { useState } from "react";
 
 export default function DashboardPage() {
-  
+  const [totalamount,setTotalAmount] = useState(2000000000)
+
   return (
     (<div className="space-y-4">
       <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
@@ -24,7 +27,7 @@ export default function DashboardPage() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">32</div>
+            <div className="text-2xl font-bold">RS.{totalamount}</div>
             <p className="text-xs text-muted-foreground">
               +20.1% from last month
             </p>
@@ -48,7 +51,7 @@ export default function DashboardPage() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+2350</div>
+            <div className="text-2xl font-bold">350</div>
             <p className="text-xs text-muted-foreground">
               +180.1% from last month
             </p>
@@ -71,7 +74,7 @@ export default function DashboardPage() {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+12,234</div>
+            <div className="text-2xl font-bold">Rs.20000</div>
             <p className="text-xs text-muted-foreground">+19% from last month</p>
           </CardContent>
         </Card>
